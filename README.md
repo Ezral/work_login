@@ -1,5 +1,5 @@
 # work_login.py
-------
+
 This is a little project that I thought of after not being able to handle
 the hassle of logging in and out of my company's website
 
