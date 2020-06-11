@@ -28,10 +28,10 @@ user = 'email'
 password = 'password'
 # Path and file name for webdriver screenshot
 now = datetime.now().strftime("%Y%m%d-%H%M")  # Define time str format
-scrshot = "/Path/of/your/choice/webhr/webhr_screenshot_{}.png".format(now)
+scrshot = "/Path/of/your/choice/hr_screenshot_{}.png".format(now)
 # Dictionaries
 btnDict = {
-'1':'btnAttendanceSignBackIn' , '2':'btnAttendanceBreakOut',
+'1':'btnAttendanceSignIn' , '2':'btnAttendanceBreakOut',
 '3':'btnAttendanceBreakIn', '4':'btnAttendanceLunchOut',
 '5':'btnAttendanceLunchIn', '6':'btnAttendanceSignOut'
 }
@@ -94,7 +94,7 @@ def execute():
 
 # Executing function
 try:
-    if driver.find_element_by_id('btnAttendanceSignBackIn').is_displayed() and btnClick != 'btnAttendanceSignBackIn':
+    if driver.find_element_by_id('btnAttendanceSignIn').is_displayed() and btnClick != 'btnAttendanceSignIn':
         print("\n"+"Error: You haven't signed in!")
         os._exit
     else:
