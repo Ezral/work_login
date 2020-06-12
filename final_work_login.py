@@ -12,23 +12,24 @@ If you don't have chromium webdriver yet, download from https://chromedriver.chr
 and place it in your ~/ folder. The version needs to follow your Google Chrome app version.
 You also need to update the executable_path located in line 23, following the path of your chromium (chromedriver).
 Packages that you will be needing to run this script: selenium, datetime, time, sys, threading and re.
-Update the credentials in line 27 and 28 using your WebHR user and password.
+Update the url for your website in line 25 and your credentials in line 27 & 28 using your WebHR user and password.
 If you want the headless to be turned off set options.headless in line 21 to False.
-You will also need to adjust and make sure that the output path for the webdriver screenshot image in line 30 exists.'''
+You will also need to adjust and make sure that the output path for the webdriver screenshot image in line 32 exists in your system.'''
 
 # Set the headless option to True/False for webdriver
 options = Options()
 options.headless = True
 # Executable path for webdriver
-webdriver_path = '/Path/of/your/choice/chromedriver'
+webdriver_path = '/Your/path/of/choice/chromedriver'
 # URL for website
-url = 'https://companywebsite.com'
+url = 'https:/your.web.site/'
 # Credentials
-user = 'email'
+user = 'user.name@workemail.com'
 password = 'password'
+name = str.title(re.split(r'\W+',user)[0])+' '+str.title(re.split(r'\W+',user)[1])
 # Path and file name for webdriver screenshot
 now = datetime.now().strftime("%Y%m%d-%H%M")  # Define time str format
-scrshot = "/Path/of/your/choice/hr_screenshot_{}.png".format(now)
+scrshot = "/Your/path/of/choice/web_screenshot_{}.png".format(now)
 # Dictionaries
 btnDict = {
 '1':'btnAttendanceSignIn' , '2':'btnAttendanceBreakOut',
@@ -46,10 +47,14 @@ errDict = {
 '5':'returned from lunch', '6':'signed out from WebHR'
 }
 # User selection for WebHR status option
-print("\nDocDoc WebHR status option:")
-answer = input("\t1 For signing in\n\t2 For going to break\n\t3 For returning from break\n\t4 For going to lunch\n\t5 For returning from lunch\n\t6 For signing out\n\nInput your selection: ")
+print("\nHi, {}!".format(name))
+print("Please select your DocDoc WebHR status:")
+answer = input("\t1 For signing in\n\t2 For going to break\n\t3 For returning from break\n\t4 For going to lunch\n\t5 For returning from lunch\n\t6 For signing out\n\tX to cancel\n\nInput your selection: ")
 # Restricting answer and error message
-if not re.match("[1-6]", answer):
+if re.match("[Xx]", answer):
+    print("\n"+"Request canceled")
+    sys.exit()
+elif not re.match("[1-6]", answer):
     print("\n"+"Error: Only numbers 1 to 6 allowed!")
     sys.exit()
 # Assigning the dictionary value that will be used to variables
@@ -67,7 +72,7 @@ def webhr_login():
     time.sleep(3)                                       # 3s sleep to let webhr page load
 # Defining the animation
 def animated_loading():
-    chars = "/—\|"
+    chars = "/-\|"
     for char in chars:
         sys.stdout.write('\r'+'Loading '+char+' ')
         time.sleep(.1)
@@ -80,8 +85,8 @@ while the_process.isAlive():
     animated_loading()
 # Clear the loading animation line once threading is finished
 sys.stdout.write('\r'+'     '+'     ')
-# 2s timeout to allow webpage to load
-time.sleep(2)
+# 1s timeout to allow webpage to load
+time.sleep(1)
 # Function to execute button clicking
 def execute():
     try:
@@ -102,5 +107,6 @@ try:
 except:
     execute()
 
+time.sleep(2)                               # 2s timeout to allow webpage to load
 driver.get_screenshot_as_file(scrshot)      # Taking screenshot from webdriver
 driver.quit()                               # Close webdriver
