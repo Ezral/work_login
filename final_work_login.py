@@ -87,25 +87,38 @@ while the_process.isAlive():
 sys.stdout.write('\r'+'     '+'     ')
 # 1s timeout to allow webpage to load
 time.sleep(1)
-# Function to execute button clicking
-def execute():
-    try:
-        elem = driver.find_element_by_id(btnClick)
-        if elem.is_displayed() and elem.is_enabled():   # Check that the element is displayed and clickable
-            print('\n'+"Success: {}".format(message))   # Print message text str in terminal
-            elem.click()                                # Click the element
-    except NoSuchElementException:                      # In the event that element is not found
-        print('\n'+"You have {} today.".format(error))  # Print error text str in terminal
-
-# Executing function
+# Main function:
 try:
-    if driver.find_element_by_id('btnAttendanceSignIn').is_displayed() and btnClick != 'btnAttendanceSignIn':
-        print("\n"+"Error: You haven't signed in!")
-        os._exit
-    else:
-        execute()
+        if driver.find_element_by_id('btnAttendanceSignBackIn').is_displayed() and btnClick != 'btnAttendanceSignBackIn':
+            print("\n"+"You have finished your WebHR session today")
+            print("Do you want to log back in?")
+            answer1 = input("Enter Y to log back in or N to exit: ")
+            if re.match("[Yy]", answer1):
+                print('\n'+"Success: You are logged back in.")               # Print message text str in terminal
+                driver.find_element_by_id("btnAttendanceSignBackIn").click() # Click the element
+            elif re.match("[Nn]", answer1):
+                print("\n"+"Closing session.")
+                os._exit
+
 except:
-    execute()
+    def execute():
+        try:
+            elem = driver.find_element_by_id(btnClick)
+            if elem.is_displayed() and elem.is_enabled():   # Check that the element is displayed and clickable
+                print('\n'+"Success: {}".format(message))   # Print message text str in terminal
+                elem.click()                                # Click the element
+        except NoSuchElementException:                      # In the event that element is not found
+            print('\n'+"You have {} today.".format(error))  # Print error text str in terminal
+
+    # Executing function
+    try:
+        if driver.find_element_by_id('btnAttendanceSignIn').is_displayed() and btnClick != 'btnAttendanceSignIn':
+            print("\n"+"Error: You haven't signed in!")
+            os._exit
+        else:
+            execute()
+    except:
+        execute()
 
 time.sleep(2)                               # 2s timeout to allow webpage to load
 driver.get_screenshot_as_file(scrshot)      # Taking screenshot from webdriver
